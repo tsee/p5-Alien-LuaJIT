@@ -2,7 +2,7 @@ package Alien::LuaJIT;
 use 5.14.0;
 use warnings;
 
-our $VERSION = '0.01';
+our $VERSION = '2.0.2.1';
 use parent 'Alien::Base';
 
 1;
