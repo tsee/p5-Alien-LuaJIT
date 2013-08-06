@@ -10,13 +10,22 @@ __END__
 
 =head1 NAME
 
-Alien::LuaJIT - Perl extension for blah blah blah
+Alien::LuaJIT - Alien module for asserting a luajit is available
 
 =head1 SYNOPSIS
 
   use Alien::LuaJIT;
+  my $alien = Alien::LuaJIT->new;
+  my $libs = $alien->libs;
+  my $cflags = $alien->cflags;
 
 =head1 DESCRIPTION
+
+See the documentation of L<Alien::Base> for details on the API of this module.
+
+This module builds a copy of LuaJIT that it ships or picks up a luajit from the
+system. It exposes the location of the installed headers and shared objects
+via a simple API to use by downstream depenent modules.
 
 =head1 SEE ALSO
 
