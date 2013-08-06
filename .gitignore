@@ -1,0 +1,9 @@
+MYMETA.*
+META.{yml,json}
+Build
+_build
+.*.swp
+.*.swo
+_alien
+_share
+blib
