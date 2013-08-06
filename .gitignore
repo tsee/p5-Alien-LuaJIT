@@ -1,5 +1,5 @@
 MYMETA.*
-META.{yml,json}
+META.*
 Build
 _build
 .*.swp
@@ -7,3 +7,4 @@ _build
 _alien
 _share
 blib
+MANIFEST
