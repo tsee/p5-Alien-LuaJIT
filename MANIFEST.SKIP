@@ -4,6 +4,7 @@ blib/
 _alien/
 _share/
 \..*\.sw[op]
-Build
+Build$
 _build/
 \.git/
+MANIFEST\.bak
