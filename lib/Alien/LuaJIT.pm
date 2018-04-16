@@ -74,9 +74,9 @@ of the executable (as returned by B<exe>);
 
 =item * http://www.luajit.org
 
-=item * Alien::LuaJIT
+=item * Alien::Lua
 
-=item * Alien::Base
+=item * Alien::Build
 
 =back
 

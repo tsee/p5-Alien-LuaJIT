@@ -42,8 +42,8 @@ It exposes the location of the installed headers and shared objects via a simple
 
 - http://www.lua.org
 - http://www.luajit.org
-- Alien::LuaJIT
-- Alien::Base
+- Alien::Lua
+- Alien::Build
 
 # AUTHOR
 
