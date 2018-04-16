@@ -3,7 +3,7 @@ package Alien::LuaJIT;
 use strict;
 use warnings;
 
-our $VERSION = '2.0005';
+our $VERSION = 'v2.0.5.1';
 use parent 'Alien::Base';
 
 sub exe { return $_[0]->runtime_prop->{command} }
