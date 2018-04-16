@@ -16,7 +16,7 @@ sub alien_helper {
 
 __END__
 
-=encoding utf8
+=encoding UTF-8
 
 =head1 NAME
 
