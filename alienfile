@@ -44,9 +44,9 @@ share {
         my @vars = map { uc($_) . '=' . $vars{$_} } keys %vars;
         $build->system( '%{make}', @vars, 'install' );
     };
-
-    gather sub {};
 };
+
+plugin 'PkgConfig' => 'luajit';
 
 sub windows_install {
     my ($build) = @_;
@@ -65,4 +65,13 @@ sub windows_install {
 
     $_->copy( $jit->child( $_->basename ) )
         for $tar->child('src/jit')->children;
+
+    my $srcpc = $tar->child('etc/luajit.pc');
+    my $tgtpc = $tgt->child('lib/pkgconfig/luajit.pc');
+    $tgtpc->parent->mkpath;
+
+    my $contents = $srcpc->slurp;
+    $contents =~ s/^prefix=.*/prefix=$tgt/;
+    $srcpc->copy($tgtpc);
+    $tgtpc->spew($contents);
 }
