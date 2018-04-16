@@ -15,12 +15,9 @@ configure {
 share {
     requires 'Path::Tiny' => 0;
 
-    start_url 'http://luajit.org/download.html';
+    start_url 'http://luajit.org/download/LuaJIT-2.0.5.tar.gz';
 
-    plugin Download => (
-        filter  => qr/^LuaJIT-\d[.]\d[.]\d\.tar\.gz$/,
-        version => qr/^LuaJIT-(\d[.]\d[.]\d)\.tar\.gz$/,
-    );
+    plugin 'Download';
 
     plugin 'Extract' => 'tar.gz';
 
