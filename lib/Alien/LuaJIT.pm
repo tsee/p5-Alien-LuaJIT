@@ -1,6 +1,6 @@
 package Alien::LuaJIT;
 
-use 5.14.0;
+use strict;
 use warnings;
 
 our $VERSION = '2.0005';
