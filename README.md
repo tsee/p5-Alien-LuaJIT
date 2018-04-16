@@ -14,9 +14,10 @@ Alien::LuaJIT - Alien module for asserting a luajit is available
 
 See the documentation of Alien::Base for details on the API of this module.
 
-This module builds looks for a copy of Lua installed in your system, or
-builds the latest one downloading it from [https://www.lua.org/ftp/](https://www.lua.org/ftp/).
-It exposes the location of the installed headers and shared objects via a simple API to use by downstream dependent modules.
+This module looks for a copy of LuaJIT installed in your system, or
+builds version 2.0.5 from sources downloaded from [http://www.luajit.org/download.html](http://www.luajit.org/download.html).
+It exposes the location of the installed headers and shared objects via a
+simple API to use by downstream dependent modules.
 
 # METHODS
 
