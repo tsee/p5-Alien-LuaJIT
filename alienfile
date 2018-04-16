@@ -15,17 +15,6 @@ configure {
 share {
     requires 'Path::Tiny' => 0;
 
-    my $platform = 'generic';
-    for ($^O) {
-        $platform = 'aix'     if /aix/;
-        $platform = 'bsd'     if /^$(open)?bsd/;
-        $platform = 'freebsd' if /freebsd/;
-        $platform = 'linux'   if /linux/;
-        $platform = 'macosx'  if /darwin/;
-        $platform = 'mingw'   if /MSWin32/;
-        $platform = 'solaris' if /solaris/;
-    }
-
     start_url 'http://luajit.org/download.html';
 
     plugin Download => (
@@ -41,15 +30,19 @@ share {
         my $build_dir = Path::Tiny::path( $build->install_prop->{extract} );
         local $CWD = $build_dir;
 
+        $build->runtime_prop->{command} = 'luajit';
+
         $build->system('%{make}');
-        if ($platform eq 'mingw') {
-            windows_install($build);
-        }
-        else {
-            $build->system('%{make}', 'install');
+
+        return windows_install($build) if $^O =~ /MSWin32/;
+
+        my %vars = ( prefix => $build->install_prop->{prefix} );
+        unless (File::Which::which('install')) {
+            $vars{install_x} = $vars{install_f} = 'cp -p';
         }
 
-        $build->runtime_prop->{command} = 'luajit';
+        my @vars = map { uc($_) . '=' . $vars{$_} } keys %vars;
+        $build->system( '%{make}', @vars, 'install' );
     };
 
     gather sub {};
