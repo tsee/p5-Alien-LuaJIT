@@ -46,7 +46,11 @@ share {
     };
 };
 
-plugin 'PkgConfig' => 'luajit';
+gather [
+  [ 'pkg-config', '--modversion', 'luajit', \q(%{.runtime.version}) ],
+  [ 'pkg-config', '--cflags',     'luajit', \q(%{.runtime.cflags}) ],
+  [ 'pkg-config', '--libs',       'luajit', \q(%{.runtime.libs}) ],
+];
 
 sub windows_install {
     my ($build) = @_;
