@@ -1,5 +1,10 @@
 Revision history for Perl extension Alien::LuaJIT.
 
+{{NEXT}}
+
+- Port to Dist::Zilla
+- Port away from Alien::Base::ModuleBuild
+- Builds latest version from FTP if on a share install
+
 2.0.2.1  Tue Aug  6 07:16:46 2013
   - original version
-

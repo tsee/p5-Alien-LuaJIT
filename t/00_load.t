@@ -1,6 +1,10 @@
-#!perl
-use 5.14.0;
-use warnings;
+use Test2::V0;
+use Test::Alien;
+use Alien::LuaJIT;
 
-use Test::More tests => 1;
-BEGIN { use_ok('Alien::LuaJIT') };
+alien_ok 'Alien::LuaJIT';
+
+my $run = run_ok([ Alien::LuaJIT->exe, '-v' ])->exit_is(0);
+$run->success ? $run->note : $run->diag;
+
+done_testing;

@@ -1,12 +1,22 @@
 package Alien::LuaJIT;
+
 use 5.14.0;
 use warnings;
 
-our $VERSION = '2.0.2.1';
+our $VERSION = '2.0005';
 use parent 'Alien::Base';
 
+sub exe { return $_[0]->runtime_prop->{command} }
+
+sub alien_helper {
+    return +{ lua => sub { __PACKAGE__->exe } }
+}
+
 1;
+
 __END__
+
+=encoding utf8
 
 =head1 NAME
 
@@ -14,35 +24,74 @@ Alien::LuaJIT - Alien module for asserting a luajit is available
 
 =head1 SYNOPSIS
 
-  use Alien::LuaJIT;
-  my $alien = Alien::LuaJIT->new;
-  my $libs = $alien->libs;
-  my $cflags = $alien->cflags;
+    use Alien::LuaJIT;
+    use Env qw( @PATH );
+
+    unshift @ENV, Alien::LuaJIT->bin_dir;
+    my $executable = Alien::LuaJIT->exe;
 
 =head1 DESCRIPTION
 
-See the documentation of L<Alien::Base> for details on the API of this module.
+See the documentation of Alien::Base for details on the API of this module.
 
-This module builds a copy of LuaJIT that it ships or picks up a luajit from the
-system. It exposes the location of the installed headers and shared objects
-via a simple API to use by downstream depenent modules.
+This module builds looks for a copy of Lua installed in your system, or
+builds the latest one downloading it from L<https://www.lua.org/ftp/>.
+It exposes the location of the installed headers and shared objects via a simple API to use by downstream dependent modules.
+
+=head1 METHODS
+
+=over 4
+
+=item B<exe>
+
+    my $lua = Alien::LuaJIT->exe;
+
+Returns the name of the Lua executable.
+
+When using the executable compiled by this distribution, you
+will need to make sure that the directories returned by C<bin_dir> are added
+to your C<PATH> environment variable. For more info, check the documentation
+of L<Alien::Build>.
+
+=back
+
+=head1 HELPERS
+
+=over 4
+
+=item B<lua>
+
+The C<%{lua}> string will be interpolated by Alien::Build into the name
+of the executable (as returned by B<exe>);
+
+=back
 
 =head1 SEE ALSO
 
-L<http://www.luajit.org>
+=over 4
 
-L<Alien::Base>
+=item * http://www.lua.org
+
+=item * http://www.luajit.org
+
+=item * Alien::LuaJIT
+
+=item * Alien::Base
+
+=back
 
 =head1 AUTHOR
 
-Steffen Mueller, E<lt>smueller@cpan.orgE<gt>
+Steffen Mueller <smueller@cpan.org>
+
+=head1 Contributors
+
+José Joaquín Atria <jjatria@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2013 by Steffen Mueller
+Copyright (C) 2013-2018 by Steffen Mueller
 
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself, either Perl version 5.8.1 or,
-at your option, any later version of Perl 5 you may have available.
+This library is free software; you can redistribute it and/or modify it under the same terms as Perl itself, either Perl version 5.8.1 or, at your option, any later version of Perl 5 you may have available.
 
 =cut

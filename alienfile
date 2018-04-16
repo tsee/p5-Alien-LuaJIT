@@ -1,0 +1,75 @@
+use alienfile;
+
+use File::chdir;
+
+plugin 'Probe::CommandLine' => (
+  command => 'lua',
+  args    => [ '-v' ],
+  match   => qr/^Lua/,
+);
+
+configure {
+  requires 'File::chdir' => 0;
+};
+
+share {
+    requires 'Path::Tiny' => 0;
+
+    my $platform = 'generic';
+    for ($^O) {
+        $platform = 'aix'     if /aix/;
+        $platform = 'bsd'     if /^$(open)?bsd/;
+        $platform = 'freebsd' if /freebsd/;
+        $platform = 'linux'   if /linux/;
+        $platform = 'macosx'  if /darwin/;
+        $platform = 'mingw'   if /MSWin32/;
+        $platform = 'solaris' if /solaris/;
+    }
+
+    start_url 'http://luajit.org/download.html';
+
+    plugin Download => (
+        filter  => qr/^LuaJIT-\d[.]\d[.]\d\.tar\.gz$/,
+        version => qr/^LuaJIT-(\d[.]\d[.]\d)\.tar\.gz$/,
+    );
+
+    plugin 'Extract' => 'tar.gz';
+
+    build sub {
+        my ($build) = @_;
+
+        my $build_dir = Path::Tiny::path( $build->install_prop->{extract} );
+        local $CWD = $build_dir;
+
+        $build->system('%{make}');
+        if ($platform eq 'mingw') {
+            windows_install($build);
+        }
+        else {
+            $build->system('%{make}', 'install');
+        }
+
+        $build->runtime_prop->{command} = 'luajit';
+    };
+
+    gather sub {};
+};
+
+sub windows_install {
+    my ($build) = @_;
+
+    my $tar = Path::Tiny::path( $build->install_prop->{extract} );
+    my $tgt = Path::Tiny::path( $build->install_prop->{prefix} );
+
+    my $bin = $tgt->child('bin');
+    my $jit = $bin->child('lua/jit');
+
+    $bin->mkpath;
+    $jit->mkpath;
+
+    $_->copy( $bin->child( $_->basename ) )
+        for $tar->child('src')->children(qr/^lua.*(exe|dll)$/);
+
+    $_->copy( $jit->child( $_->basename ) )
+        for $tar->child('src/jit')->children;
+}
